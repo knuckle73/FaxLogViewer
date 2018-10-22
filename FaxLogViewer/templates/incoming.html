@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block body%}
+	<h1>Incoming Fax Logs</h1>
+    <ul class="list-group">
+        {% for log in incoming %}
+        <li class="list-group-item"><a href="rcvd/{{log.ifid}}">{{log.rcvd_timestamp}} {{log.recipient_name}}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

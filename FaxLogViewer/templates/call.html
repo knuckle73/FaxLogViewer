@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Call Log Detail</h1>
+	<style type="text/css">
+		.tg  {border-collapse:collapse;border-spacing:0;}
+		.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+		.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+		.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+		.tg .tg-0lax{text-align:left;vertical-align:top}
+	</style>
+	<div>
+		<table class="tg" style="width:100%">
+		    <tr>
+		    	<th class="tg-0pky">Timestamp</th>
+		    	<th class="tg-0pky">Direction</th>
+		    	<th class="tg-0pky">Sender Name</th>
+		    	<th class="tg-0pky">Pages</th>
+		    	<th class="tg-0pky">Sender Fax #</th>
+		    	<th class="tg-0pky">Recepient Fax #</th>
+		    	<th class="tg-0pky">Status</th>
+
+		    </tr>
+		    <tr>
+		    	<td class="tg-0pky">{{call.call_timestamp}}</td>
+		    	<td class="tg-0pky">{{call.direction}}</td>
+		    	<td class="tg-0pky">{{call.remote_id}}</td>
+		    	<td class="tg-0pky">{{call.pages}}</td>
+		    	<td class="tg-0pky">{{call.caller_number}}</td>
+		    	<td class="tg-0pky">{{call.rcpt_fax}}</td>
+		    	<td class="tg-0pky">{{call.status}}</td>
+		    </tr>
+		</table>
+	</div>
+{% endblock %}

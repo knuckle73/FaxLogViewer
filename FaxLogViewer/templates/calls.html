@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block body%}
+
+	<h1>Call Process logs</h1>
+    <ul class="list-group">
+        {% for log in calls %}
+        <li class="list-group-item"><a href="call/{{log.clid}}">{{log.call_timestamp}} {{log.direction}}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

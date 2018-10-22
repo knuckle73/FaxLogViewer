@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block body%}
+    <div class="content-section">
+        <form method="POST" action="{{ url_for('home') }}">
+            {{ form.hidden_tag() }}
+            <div class="jumbotron text-center">
+		        <h1> Welcome to the SCHC</h1>
+		        <p class="lead">You may use this database to search and view faxes sent and received by SCHC employees.</p>
+		        <p class="lead"> The data is one day behind.</p>
+	        </div>
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Search</legend>
+                <div class="form-group">
+                    <div>
+                        {{ form.LogType.label(class="form-control-label")}}
+                    </div>
+                    {% if form.LogType.errors %}
+                        {{ form.LogType(class="radio-inline") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.LogType.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.LogType(class="radio-inline") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.DateStart.label(class="form-control-label")}}
+                    {% if form.DateStart.errors %}
+                        {{ form.DateStart(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.DateStart.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.DateStart(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.DateEnd.label(class="form-control-label") }}
+                    {% if form.DateEnd.errors %}
+                        {{ form.DateEnd(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.DateEnd.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.DateEnd(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.criteria.label(class="form-control-label") }}
+                    {% if form.criteria.errors %}
+                        {{ form.criteria(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.criteria.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.criteria(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock %}

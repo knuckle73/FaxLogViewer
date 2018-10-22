@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Sent Fax Detail</h1>
+	<style type="text/css">
+		.tg  {border-collapse:collapse;border-spacing:0;}
+		.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+		.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+		.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+		.tg .tg-0lax{text-align:left;vertical-align:top}
+	</style>
+	<div>
+		<table class="tg" style="width:100%">
+		<tr>
+			<th class="tg-0pky">Timestamp</th>
+			<th class="tg-0pky">Sender Name</th>
+			<th class="tg-0pky">Sender Email</th>
+			<th class="tg-0pky">Pages</th>
+			<th class="tg-0pky">Sender Fax #</th>
+			<th class="tg-0pky">Recepient Name</th>
+			<th class="tg-0pky">Recepient Fax #</th>
+			<th class="tg-0pky">Status</th>
+			<th class="tg-0pky">Code</th>
+			
+		</tr>
+		<tr>
+			<td class="tg-0pky">{{detail.sent_timestamp}}</td>
+			<td class="tg-0pky">{{detail.sender_name}}</td>
+			<td class="tg-0pky">{{detail.sender_email}}</td>
+			<td class="tg-0pky">{{detail.pages}}</td>
+			<td class="tg-0pky">{{detail.sender_fax}}</td>
+			<td class="tg-0pky">{{detail.rcpt_name}}</td>
+			<td class="tg-0pky">{{detail.rcpt_fax}}</td>
+			<td class="tg-0pky">{{detail.state}}</td>
+			<td class="tg-0pky">{{detail.fsched_code}}</td>
+		</tr>
+		<tr>
+			<td class="tg-0pky" colspan="9">Subject:</td>
+		</tr>
+		<tr>
+			<td class="tg-0pky" colspan="9">{{detail.subject}}</td>
+		</tr>
+		<tr>
+			<td class="tg-0pky" colspan="9">Comments:</td>
+			
+		</tr>
+		<tr>
+			<td class="tg-0pky" colspan="9">{{detail.comments}}</td>
+		</tr>
+		</table>
+	</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block body%}
+	<h1>Ougoing Fax Logs</h1>
+  <ul class="list-group">
+    {% for log in outgoing %}
+      <li class="list-group-item"><a href="sent/{{log.ofid}}">{{log.sent_timestamp}} {{log.sender_name}}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}
