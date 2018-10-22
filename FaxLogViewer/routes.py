@@ -1,37 +1,49 @@
 from flask import render_template, flash, redirect, url_for
 from FaxLogViewer import app, mysql
 from FaxLogViewer.Forms import LoginForm, RegistrationForm, SearchForm
+from datetime import timedelta
+
+
+
 
 
 @app.route('/')
-
-
-
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/home')
 def home():
+	return render_template('home.html', title='Home')
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
 	form = SearchForm()
-	if form.validate_on_submit():
-		datestart = form.DateStart.data
+	#if form.validate_on_submit():
+	datestart = form.DateStart.data
+	if not form.DateEnd.data:
+		dateend = datestart
+	else:
 		dateend = form.DateEnd.data
-		criteria = form.criteria.data
-		if form.LogType.choices == 1:
-			flash(" Incoming Start date: " + str(start) + " End date: " + str(end) + " Search data: " + data)
-			#return url_for(incoming(datestart, dateend, criteria))
-		elif form.LogType.choices == 2:
-			flash(" Outgoing Start date: " + str(start) + " End date: " + str(end) + " Search data: " + data)
-			#return url_for(outgoing(datestart, dateend, criteria))
-		else:
-			flash('No log type was selected!')
+	criteria = form.criteria.data
+	searchinfo = '{} {} {}'.format(datestart, dateend, criteria)
+	print("Length before passing to function: ", len(searchinfo))
+	if form.LogType.data == "1":
+		print("Incoming - Start date: " + str(datestart) + " End date: " + str(dateend) + " Search data: " + criteria)
+		return redirect(url_for('incoming', data=searchinfo))
+	elif form.LogType.data == "2":
+		print("Outgoing - Start date: " + str(datestart) + " End date: " + str(dateend) + " Search data: " + criteria)
+		return redirect(url_for('outgoing', data=searchinfo))
+	else:
+		flash('No log type was selected!')
+	return render_template('search.html', title='Search', form=form)
 
-	return render_template('home.html', title='Search', form=form)
-
-
-@app.route('/incoming')
-def incoming():   #start, end, data
+@app.route('/incoming/<data>', methods=['GET', 'POST'])
+def incoming(data):
 	cur = mysql.connection.cursor()
-	#flash("Start date: " + str(start) + " End date: " + str(end) + " Search data: " + data)
+	print("Variable type: ", type(data))
+	print("Length after passing: ", len(data))
+	print(" Incoming - Start date: " + data[1] + " End date: " + data[2] + " Search data: " + data[3])
+	criteria = (data[1], data[2])
 	result = cur.execute("SELECT ifid, oid, rcvd_timestamp, state, recipient_name, num_pages, delivery_results, "
-						 "caller_name FROM faxlogs_db.incoming_faxes ORDER BY ifid DESC LIMIT 100")
+						 "caller_name FROM faxlogs_db.incoming_faxes WHERE rcvd_timestamp >= %s AND rcvd_timestamp < %s", criteria)
 
 	incoming = cur.fetchall()
 
@@ -60,10 +72,10 @@ def rcvd(id):
 	return render_template('rcvd.html', detail=detail)
 
 
-@app.route('/outgoing')
+@app.route('/outgoing', methods=['GET', 'POST'])
 def outgoing(): #start, end, data
 	cur = mysql.connection.cursor()
-	#flash("Start date: " + str(start) + " End date: " + str(end) + " Search data: " + data)
+	print("Outgoing - Start date: " + str(data[1]) + " End date: " + str(data[2]) + " Search data: " + data[3])
 	result = cur.execute("SELECT ofid, oid, sent_timestamp, state, username, sender_name FROM "
 						 "faxlogs_db.outbound_faxes ORDER BY ofid DESC LIMIT 100")
 

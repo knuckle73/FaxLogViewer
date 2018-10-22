@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateField, RadioField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, RadioField
+from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, optional
 
 
@@ -20,7 +21,7 @@ class LoginForm(FlaskForm):
 
 class SearchForm(FlaskForm):
 	DateStart = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired()])
-	DateEnd = DateField('End Date', format='%Y-%m-%d', validators=[optional])
+	DateEnd = DateField('End Date', format='%Y-%m-%d', validators=[optional()])
 	criteria = StringField('Search Criteria')
-	LogType = RadioField('Select Record Type', choices=[(1, 'Incoming Faxes'),(2, 'Outgoing Faxes')])
+	LogType = RadioField('Select Record Type', choices=[(1, 'Incoming Faxes'), (2, 'Outgoing Faxes')], default=[1])
 	submit = SubmitField('Search')
