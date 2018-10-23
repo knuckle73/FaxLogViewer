@@ -2,10 +2,28 @@
 
 {% block body%}
 	<h1>Incoming Fax Logs</h1>
-    <ul class="list-group">
-        <h3>DateTime</h3> <h3>Recipient Name</h3>
-        {% for log in incoming %}
-        <li class="list-group-item"><a href="/rcvd/{{log.ifid}}">{{log.rcvd_timestamp}} {{log.recipient_name}}</a></li>
-        {% endfor %}
-    </ul>
+    <style type="text/css">
+		.tg  {border-collapse:collapse;border-spacing:0;}
+		.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+		.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+		.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+		.tg .tg-0lax{text-align:center;vertical-align:top}
+	</style>
+
+        <table class="tg">
+            <tr>
+                <th class="th">Datetime</th>
+                <th class="th">Receiver</th>
+                <th class="th">Sender Phone</th>
+                <th class="th">Details</th>
+            </tr>
+                {% for log in incoming %}
+                    <tr>
+                        <td class="tg-0pky">{{log.rcvd_timestamp}}</td>
+                        <td class="tg-0pky">{{log.recipient_name}}</td>
+                        <td class="tg-0pky">{{log.caller_name}}</td>
+                        <td class="tg-0lax"><a href="/rcvd/{{log.ifid}}" ><img src="{{url_for('static', filename='images/detail.png')}}" alt="Detail" style="width:30px;height:30px;"></a></td>
+                    </tr>
+                {% endfor %}
+        </table>
 {% endblock %}
