@@ -1,3 +1,5 @@
 .idea/
 FaxLogViewer/config.py
 FaxLogViewer/__pycache__/
+Pipfile
+Pipfile.lock
