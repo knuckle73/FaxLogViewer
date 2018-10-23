@@ -17,33 +17,33 @@ def home():
 def search():
 	form = SearchForm()
 	#if form.validate_on_submit():
-	datestart = form.DateStart.data
+	datestart = str(form.DateStart.data)
 	if not form.DateEnd.data:
 		dateend = datestart
 	else:
-		dateend = form.DateEnd.data
+		dateend = str(form.DateEnd.data)
 	criteria = form.criteria.data
-	searchinfo = '{} {} {}'.format(datestart, dateend, criteria)
-	print("Length before passing to function: ", len(searchinfo))
+	searchinfo = "{},{},{}".format(datestart, dateend, criteria)
+	#print("Length before passing to function: ", len(searchinfo))
 	if form.LogType.data == "1":
-		print("Incoming - Start date: " + str(datestart) + " End date: " + str(dateend) + " Search data: " + criteria)
+		#print("Incoming - Start date: " + str(datestart) + " End date: " + str(dateend) + " Search data: " + criteria)
 		return redirect(url_for('incoming', data=searchinfo))
 	elif form.LogType.data == "2":
-		print("Outgoing - Start date: " + str(datestart) + " End date: " + str(dateend) + " Search data: " + criteria)
+		#print("Outgoing - Start date: " + str(datestart) + " End date: " + str(dateend) + " Search data: " + criteria)
 		return redirect(url_for('outgoing', data=searchinfo))
 	else:
 		flash('No log type was selected!')
 	return render_template('search.html', title='Search', form=form)
 
-@app.route('/incoming/<data>', methods=['GET', 'POST'])
+@app.route('/incoming/<string:data>', methods=['GET', 'POST'])
 def incoming(data):
 	cur = mysql.connection.cursor()
-	print("Variable type: ", type(data))
-	print("Length after passing: ", len(data))
-	print(" Incoming - Start date: " + data[1] + " End date: " + data[2] + " Search data: " + data[3])
-	criteria = (data[1], data[2])
+
+	criteria = data.split(',')
+	searchdates = (criteria[0], criteria[1])
+
 	result = cur.execute("SELECT ifid, oid, rcvd_timestamp, state, recipient_name, num_pages, delivery_results, "
-						 "caller_name FROM faxlogs_db.incoming_faxes WHERE rcvd_timestamp >= %s AND rcvd_timestamp < %s", criteria)
+						 "caller_name FROM faxlogs_db.incoming_faxes WHERE rcvd_timestamp >= %s AND rcvd_timestamp < %s", searchdates)
 
 	incoming = cur.fetchall()
 
@@ -72,12 +72,15 @@ def rcvd(id):
 	return render_template('rcvd.html', detail=detail)
 
 
-@app.route('/outgoing', methods=['GET', 'POST'])
-def outgoing(): #start, end, data
+@app.route('/outgoing/<string:data>', methods=['GET', 'POST'])
+def outgoing(data):
 	cur = mysql.connection.cursor()
-	print("Outgoing - Start date: " + str(data[1]) + " End date: " + str(data[2]) + " Search data: " + data[3])
-	result = cur.execute("SELECT ofid, oid, sent_timestamp, state, username, sender_name FROM "
-						 "faxlogs_db.outbound_faxes ORDER BY ofid DESC LIMIT 100")
+
+	criteria = data.split(',')
+	searchdates = (criteria[0], criteria[1])
+
+	result = cur.execute("SELECT ofid, oid, sent_timestamp, rcpt_fax, state, username, sender_name FROM "
+						 "faxlogs_db.outbound_faxes WHERE sent_timestamp >= %s AND sent_timestamp < %s", searchdates)
 
 	outgoing = cur.fetchall()
 

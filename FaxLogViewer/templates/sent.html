@@ -1,15 +1,22 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <h1>Sent Fax Detail</h1>
-	<style type="text/css">
+    <div>
+        <h1>Sent Fax Detail</h1>
+    </div>
+    <style type="text/css">
 		.tg  {border-collapse:collapse;border-spacing:0;}
 		.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
 		.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
 		.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
 		.tg .tg-0lax{text-align:left;vertical-align:top}
+		.tg .tg-0prt{text-align:right;vertical-align:top}
 	</style>
 	<div>
+        <div align="right">
+            <a href="#" onclick="window.print();return false;">Print this page</a>
+        </div>
+
 		<table class="tg" style="width:100%">
 		<tr>
 			<th class="tg-0pky">Timestamp</th>

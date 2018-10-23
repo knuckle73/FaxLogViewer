@@ -2,9 +2,29 @@
 
 {% block body%}
 	<h1>Ougoing Fax Logs</h1>
-  <ul class="list-group">
-    {% for log in outgoing %}
-      <li class="list-group-item"><a href="sent/{{log.ofid}}">{{log.sent_timestamp}} {{log.sender_name}}</a></li>
-    {% endfor %}
-  </ul>
+	<style type="text/css">
+		.tg  {border-collapse:collapse;border-spacing:0;}
+		.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+		.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+		.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+		.tg .tg-0lax{text-align:center;vertical-align:top}
+	</style>
+    <div>
+        <table class="tg">
+            <tr>
+                <th class="th">Datetime</th>
+                <th class="th">Sender</th>
+                <th class="th">Recepiet Phone</th>
+                <th class="th">Details</th>
+            </tr>
+                {% for log in outgoing %}
+                    <tr>
+                        <td class="tg-0pky">{{log.sent_timestamp}}</td>
+                        <td class="tg-0pky">{{log.sender_name}}</td>
+                        <td class="tg-0pky">{{log.rcpt_fax}}</td>
+                        <td class="tg-0lax"><a href="/sent/{{log.ofid}}" ><img src="{{url_for('static', filename='images/detail.png')}}" alt="Detail" style="width:30px;height:30px;"></a></td>
+                    </tr>
+                {% endfor %}
+        </table>
+    </div>
 {% endblock %}
