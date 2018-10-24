@@ -2,6 +2,8 @@ from flask import render_template, flash, redirect, url_for
 from FaxLogViewer import app, mysql
 from FaxLogViewer.Forms import LoginForm, RegistrationForm, SearchForm
 
+app.config['SECRET_KEY'] = 'b48fb44860e75665aa4ec29c703bae6d'
+
 
 @app.route('/')
 @app.route('/home')
@@ -12,24 +14,22 @@ def home():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
 	form = SearchForm()
-	#if form.validate_on_submit():
-	datestart = str(form.DateStart.data)
-	if not form.DateEnd.data:
-		dateend = datestart
-	else:
-		dateend = str(form.DateEnd.data)
-	criteria = form.criteria.data
-	searchinfo = "{},{},{}".format(datestart, dateend, criteria)
-	#print("Length before passing to function: ", len(searchinfo))
-	if form.LogType.data == "1":
-		#print("Incoming - Start date: " + str(datestart) + " End date: " + str(dateend) + " Search data: " + criteria)
-		return redirect(url_for('incoming', data=searchinfo))
-	elif form.LogType.data == "2":
-		#print("Outgoing - Start date: " + str(datestart) + " End date: " + str(dateend) + " Search data: " + criteria)
-		return redirect(url_for('outgoing', data=searchinfo))
-	else:
-		flash('No log type was selected!')
+	if form.submit():
+		datestart = str(form.DateStart.data)
+		if not form.DateEnd.data:
+			dateend = datestart
+		else:
+			dateend = str(form.DateEnd.data)
+		criteria = form.criteria.data
+		searchinfo = "{},{},{}".format(datestart, dateend, criteria)
+		if form.LogType.data == "1":
+			return redirect(url_for('incoming', data=searchinfo))
+		elif form.LogType.data == "2":
+			return redirect(url_for('outgoing', data=searchinfo))
+		else:
+			flash('No log type was selected!')
 	return render_template('search.html', title='Search', form=form)
+
 
 @app.route('/incoming/<string:data>', methods=['GET', 'POST'])
 def incoming(data):
@@ -139,20 +139,20 @@ def call(id):
 	return render_template('call.html', call=call)
 
 
-@app.route('/register')
+@app.route("/register")
 def register():
 	form = RegistrationForm()
 	return render_template('register.html', title='Register', form=form)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
 	##if current_user.is_authenticated:
 	##	return redirect(url_for('home'))
 
 	form = LoginForm()
 
-	if form.validate_on_submit():
+	if form.submit():
 		print(form.email.data, " ", form.password.data)
 		if form.email.data == 'admin@blog.com' and form.password.data == 'password':
 			flash('You have been logged in!', 'success')
@@ -162,10 +162,10 @@ def login():
 			##	login_user(user, remember=form.remember.data)
 			##	next_page = request.args.get('next')
 			##	return redirect(next_page) if next_page else redirect(url_for('home'))
-	else:
-		print(form.validate_on_submit())
-		print(form.email.data, " ", form.password.data)
-		flash('Login Unsuccessful. Please check email and password', 'danger')
+		else:
+			print(form.validate_on_submit())
+			print(form.email.data, " ", form.password.data)
+			flash('Login Unsuccessful. Please check email and password', 'danger')
 	return render_template('login.html', title='Login', form=form)
 
 
