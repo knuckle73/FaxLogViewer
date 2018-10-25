@@ -5,7 +5,7 @@ from FaxLogViewer.config import credentials
 app = Flask(__name__)
 
 # Config MySQL
-
+app.config['SECRET_KEY'] = 'b48fb44860e75665aa4ec29c703bae6d'
 app.config['MYSQL_HOST'] = 'schc-db02'
 app.config['MYSQL_USER'] = credentials.username()
 app.config['MYSQL_PASSWORD'] = credentials.passwd()

@@ -23,5 +23,5 @@ class SearchForm(FlaskForm):
 	DateStart = DateField('Start Date', format='%Y-%m-%d', validators=[DataRequired()])
 	DateEnd = DateField('End Date', format='%Y-%m-%d', validators=[optional()])
 	criteria = StringField('Search Criteria')
-	LogType = RadioField('Select Record Type', choices=[(1, 'Incoming Faxes'), (2, 'Outgoing Faxes')], default=[1])
+	LogType = RadioField('Select Record Type', choices=[(1, 'Incoming Faxes'), (2, 'Outgoing Faxes')], default=['1'])
 	submit = SubmitField('Search')

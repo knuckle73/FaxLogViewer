@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for
+from flask_login import login_user, current_user, logout_user, login_required
 from FaxLogViewer import app, mysql
 from FaxLogViewer.Forms import LoginForm, RegistrationForm, SearchForm
 
-app.config['SECRET_KEY'] = 'b48fb44860e75665aa4ec29c703bae6d'
 
 
 @app.route('/')
@@ -147,8 +147,8 @@ def register():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-	##if current_user.is_authenticated:
-	##	return redirect(url_for('home'))
+	if current_user.is_authenticated:
+		return redirect(url_for('search'))
 
 	form = LoginForm()
 
