@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_mysqldb import MySQL
 from FaxLogViewer.config import credentials
+from flask_login import LoginManager
 
 app = Flask(__name__)
 
@@ -12,6 +13,9 @@ app.config['MYSQL_PASSWORD'] = credentials.passwd()
 app.config['MYSQL_DB'] = 'faxlogs_db'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.login_message_category = 'info'
 
 # init MYSQL
 mysql = MySQL(app)
